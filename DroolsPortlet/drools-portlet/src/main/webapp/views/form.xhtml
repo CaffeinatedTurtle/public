@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<h:head />
+	<h:body>
+		<h:outputText value="#{i18n['drools-portlet-hello-world']} FORM" />
+		<h:form id="mainForm">
+			<p:panel header="Form" styleClass="formPanel">
+		
+				<c:forEach var="f" items="${viewBean.forms}">				
+                <div id = "${f.name}">
+		   		<ui:include src="${f.name}.xhtml" />
+				</div>
+				</c:forEach>
+				
+                <h:panelGrid id="buttonBar" styleClass="buttonBar" columns="2">
+					<p:commandButton styleClass="button" id="pushButtonSubmit"
+						actionListener="#{viewBean.submit()}" action="finish.xhtml"
+						value="#{i18n['submit']}" />
+				</h:panelGrid>   
+				</p:panel>
+				</h:form>
+	
+	</h:body>
+</f:view>

@@ -1,0 +1,58 @@
+package com.cte.drools
+ 
+import com.cte.drools.Question;
+global com.cte.drools.View view;
+
+rule "Is company"
+    when
+        q : Question(question == "Are you submitting this as a individual" , answer == Question.NO )
+    then
+        System.out.println("individual no");
+  
+        view.addQuestion( "is your company < 100 employees" );
+        view.setComplete( false );
+        view.removeForm("individualident");
+end
+
+rule "Is Individual"
+    when
+        q : Question(question == "Are you submitting this as a individual" , answer == Question.YES )
+    then
+    System.out.println("individual yes");
+        view.removeQuestion( "is your company < 100 employees" );
+        view.addForm("individualident","Identification Form", "clientBean");
+end
+
+rule "small company"
+    when
+        q : Question(question == "is your company < 100 employees", answer == Question.YES )
+    then
+        view.removeForm("largcompnayident");
+        view.addForm("smallcompanyident","Small Company Form", "companyBean");
+end
+
+rule "large company"
+    when
+        q : Question(question == "is your company < 100 employees", answer == Question.NO )
+    then
+        view.removeForm("smallcompanyident");
+        view.addForm("largecompanyident","Large Company Form", "companyBean");
+end
+
+rule "Is BC resident"
+    when
+        q : Question(question == "Are you a resident of B.C." , answer == Question.YES )
+    then
+       view.removeForm("nonbcresidentident");
+       view.addForm("bcresidentident","BC Resident Form", "clientBean");
+end
+
+rule "Is NOT BC resident"
+    when
+        q : Question(question == "Are you a resident of B.C." , answer == Question.NO )
+    then
+       view.removeForm("bcresidentident");
+       view.addForm("nonbcresidentident","Non Resident Form", "clientBean");
+end
+
+
